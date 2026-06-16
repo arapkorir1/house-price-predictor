@@ -2,7 +2,7 @@ from pathlib import Path
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 ROOT                 = Path(__file__).parent
-RAW_DATA_PATH        = ROOT / 'data' / 'raw'
+RAW_DATA_PATH        = ROOT / 'data' / 'raw' / 'train.csv'
 PROCESSED_DATA_PATH  = ROOT / 'data' / 'processed'
 EXTERNAL_DATA_PATH   = ROOT / 'data' / 'external'
 MODELS_PATH          = ROOT / 'models'
