@@ -1,0 +1,42 @@
+# Data
+data/raw/
+data/processed/
+data/external/
+
+# Models — too large for git
+models/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# Environment
+.env
+venv/
+.venv/
+env/
+
+# Conda
+.conda/
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Monitoring reports
+monitoring/reports/
+
+# Optuna
+optuna.db

@@ -1,0 +1,30 @@
+name: house-price
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - catboost
+  - scikit-learn
+  - uvicorn
+  - python-dotenv
+  - seaborn
+  - fastapi
+  - matplotlib
+  - streamlit
+  - nbstripout
+  - xgboost
+  - shap
+  - ipykernel
+  - scipy
+  - kaggle
+  - jupyter
+  - joblib
+  - optuna
+  - pandas
+  - pydantic
+  - pytest
+  - numpy
+  - jupyterlab
+  - lightgbm
+
