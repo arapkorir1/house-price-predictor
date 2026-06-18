@@ -1,4 +1,7 @@
-from config import RANDOM_SEED, CV_FOLDS, SCORING
+from config import RANDOM_SEED, CV_FOLDS, SCORING, MODELS_PATH
+import joblib
+from pathlib import Path
+from datetime import datetime
 
 def get_baseline_model():
 
@@ -114,3 +117,24 @@ def compare_models(models_dict,
 
     return results_df
 
+def save_model(model,  
+               name, 
+               metadata=None):
+    """
+    Save model to disk with optional metadata (params, scores, date).
+    """
+    model_path = MODELS_PATH / f'{name}.pkl'
+    joblib.dump(model, model_path)
+
+    if metadata:
+        meta_path = MODELS_PATH / f'{name}_metadata.json'
+        metadata['saved_at'] = datetime.now().isoformat()
+        metadata['model_class'] = model.__class__.__name__
+        with open(meta_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+def load_model(name):
+    """Load a saved model by name."""
+    path = MODELS_PATH / f'{name}.pkl'
+    model = joblib.load(path)
+    return model
