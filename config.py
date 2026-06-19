@@ -2,12 +2,15 @@ from pathlib import Path
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 ROOT                 = Path(__file__).parent
-RAW_DATA_PATH        = ROOT / 'data' / 'raw' / 'train.csv'
-PROCESSED_DATA_PATH  = ROOT / 'data' / 'processed'
+RAW_DATA_PATH        = ROOT / 'data' / 'raw' 
+PROCESSED_DATA_PATH  = ROOT / 'data' / 'processed' 
 EXTERNAL_DATA_PATH   = ROOT / 'data' / 'external'
 MODELS_PATH          = ROOT / 'models'
 FIGURES_PATH         = ROOT / 'reports' / 'figures'
 SUBMISSIONS_PATH     = ROOT / 'data' / 'external'
+
+TRAIN_FILE           = RAW_DATA_PATH / 'train.csv'
+TEST_FILE            = RAW_DATA_PATH / 'test.csv'
 
 # ── Data ───────────────────────────────────────────────────────────────────────
 TARGET       = 'SalePrice'
