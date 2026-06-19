@@ -136,7 +136,7 @@ def build_features(df):
     from config import TARGET
 
 
-    #df = log_transform(df, cols=['income', 'price'])
-    #df = handle_high_cardinality(df, col='city', threshold=30)
-    #df = one_hot_encode(df, cols=['city', 'category'])
-    #return df
+    df = log_transform(df, cols=['income', 'price'])
+    df = handle_high_cardinality(df, col='city', threshold=30)
+    df = one_hot_encode(df, cols=['city', 'category'])
+    return df
