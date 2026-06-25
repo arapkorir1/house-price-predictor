@@ -9,6 +9,7 @@ models/
 # Jupyter checkpoints
 .ipynb_checkpoints/
 *.ipynb_checkpoints
+catboost_info/
 
 # Python cache
 __pycache__/
