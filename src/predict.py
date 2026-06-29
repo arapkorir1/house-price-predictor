@@ -40,39 +40,55 @@ def _load_artefacts():
     if meta_path.exists():
         with open(meta_path) as f:
             _metadata = json.load(f)
+        logger.info("Metadata loaded")
+
+    # Get feature names directly from the trained model — single source of truth
+    # This is more reliable than metadata because it IS what the model was fit on
+    if hasattr(_model, 'feature_names_'):
+        _features = list(_model.feature_names_)
+        logger.info(f"Features from model: {len(_features)}")
+    elif _metadata:
         _features = _metadata.get('features', [])
-        logger.info(f"Metadata loaded — {len(_features)} features expected")
-
-
-_load_artefacts()
-
-
+        logger.info(f"Features from metadata: {len(_features)}")
 # ── Preprocessing ─────────────────────────────────────────────────────────────
 def preprocess(data: dict | pd.DataFrame) -> pd.DataFrame:
     """
     Prepare raw input for the model.
-    Must mirror notebook 02 exactly — any difference = wrong predictions.
+    Builds a clean single-allocation DataFrame — no fragmentation.
     """
     if isinstance(data, dict):
-        df = pd.DataFrame([data])
+        input_df = pd.DataFrame([data])
     else:
-        df = data.copy()
+        input_df = data.copy()
 
-    # Add any missing expected features with 0
     if _features:
+        # Build ONE clean DataFrame with all columns at once
+        # Start everything at zero, then fill what we actually have
+        result = pd.DataFrame(
+            np.zeros((len(input_df), len(_features))),
+            columns=_features
+        )
         for col in _features:
-            if col not in df.columns:
-                df[col] = 0
-                logger.warning(f"Missing feature filled with 0: {col}")
-        df = df[_features]   # enforce correct column order
+            if col in input_df.columns:
+                result[col] = input_df[col].values
+        df = result
+    else:
+        df = input_df.copy()
 
-    # Apply scaler
+    # Apply scaler only to the exact columns it was fit on
     if _scaler is not None:
-        numeric_cols = df.select_dtypes(include='number').columns
-        df[numeric_cols] = _scaler.transform(df[numeric_cols])
+        try:
+            # sklearn >= 1.0 stores the names it was fit on
+            scaler_cols   = list(_scaler.feature_names_in_)
+            cols_to_scale = [c for c in scaler_cols if c in df.columns]
+            if cols_to_scale:
+                df[cols_to_scale] = _scaler.transform(df[cols_to_scale])
+        except AttributeError:
+            # Older sklearn fallback
+            numeric_cols = df.select_dtypes(include='number').columns.tolist()
+            df[numeric_cols] = _scaler.transform(df[numeric_cols])
 
     return df
-
 
 # ── Core prediction functions ─────────────────────────────────────────────────
 def predict_single(data: dict) -> dict:
